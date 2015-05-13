@@ -16,7 +16,7 @@ public class SearchResult implements Serializable {
     public String title;
     public String tbUrl;
 
-    public SearchResult(JSONObject jsonObj)  throws JSONException {
+    public SearchResult(JSONObject jsonObj) throws JSONException {
         width = jsonObj.getInt("width");
         height = jsonObj.getInt("height");
         tbwidth = jsonObj.getInt("tbWidth");

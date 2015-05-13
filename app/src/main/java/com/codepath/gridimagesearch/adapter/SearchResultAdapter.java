@@ -1,6 +1,7 @@
 package com.codepath.gridimagesearch.adapter;
 
 import android.content.Context;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResult> {
         Picasso.with(getContext())
                 .load(searchResult.tbUrl)
                 .into(viewHolder.ivPhoto);
-        viewHolder.tvCaption.setText(searchResult.title);
+        viewHolder.tvCaption.setText(Html.fromHtml( searchResult.title ));
 
         return convertView;
     }
