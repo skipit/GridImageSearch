@@ -8,7 +8,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/ivImageResult"
         android:maxWidth="600dp"
-        android:scaleType="center"
+        android:scaleType="centerInside"
         android:adjustViewBounds="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

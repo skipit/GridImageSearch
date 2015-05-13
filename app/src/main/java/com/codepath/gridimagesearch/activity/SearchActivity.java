@@ -29,11 +29,9 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 
-public class SearchActivity extends ActionBarActivity implements View.OnClickListener, AdapterView.OnItemClickListener {
+public class SearchActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
 
-    private EditText etSearchQuery;
     private GridView gvSearchResults;
-    private Button btSearch;
     private SearchResultAdapter searchResultAdapter;
     private int querySize = 8;
 
@@ -47,10 +45,6 @@ public class SearchActivity extends ActionBarActivity implements View.OnClickLis
         setContentView(R.layout.activity_search);
 
         gQuery = new GoogleQuery();
-
-        etSearchQuery = (EditText) findViewById(R.id.etQuery);
-        btSearch = (Button) findViewById(R.id.btSearch);
-        btSearch.setOnClickListener(this);
 
         searchResults = new ArrayList<SearchResult>();
 
@@ -151,16 +145,6 @@ public class SearchActivity extends ActionBarActivity implements View.OnClickLis
                 }
             }
         );
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch ( v.getId()) {
-            case R.id.btSearch:
-                gQuery.queryString = etSearchQuery.getText().toString();
-                getResults();
-                break;
-        }
     }
 
     @Override

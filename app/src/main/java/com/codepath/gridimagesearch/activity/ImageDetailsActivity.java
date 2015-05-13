@@ -16,7 +16,7 @@ public class ImageDetailsActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_details);
-
+        getSupportActionBar().hide();
         SearchResult result = (SearchResult) getIntent().getSerializableExtra("search_result");
 
         ImageView imageView = (ImageView) findViewById(R.id.ivImageResult);
