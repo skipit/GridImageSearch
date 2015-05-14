@@ -1,4 +1,4 @@
-package com.codepath.gridimagesearch.model;
+package com.codepath.gridimagesearch.models;
 
 import org.json.JSONArray;
 import org.json.JSONException;

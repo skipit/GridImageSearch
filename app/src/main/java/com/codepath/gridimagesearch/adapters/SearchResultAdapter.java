@@ -1,4 +1,4 @@
-package com.codepath.gridimagesearch.adapter;
+package com.codepath.gridimagesearch.adapters;
 
 import android.content.Context;
 import android.text.Html;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.codepath.gridimagesearch.R;
-import com.codepath.gridimagesearch.model.SearchResult;
+import com.codepath.gridimagesearch.models.SearchResult;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

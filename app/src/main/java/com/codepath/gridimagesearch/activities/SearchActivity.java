@@ -1,6 +1,7 @@
-package com.codepath.gridimagesearch.activity;
+package com.codepath.gridimagesearch.activities;
 
 import android.content.Intent;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,14 +11,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.GridView;
 import android.support.v7.widget.SearchView;
+import android.widget.Toast;
 
 import com.codepath.gridimagesearch.R;
-import com.codepath.gridimagesearch.adapter.SearchResultAdapter;
-import com.codepath.gridimagesearch.model.SearchResult;
+import com.codepath.gridimagesearch.adapters.SearchResultAdapter;
+import com.codepath.gridimagesearch.fragments.FilterFragment;
+import com.codepath.gridimagesearch.models.FilterPreferences;
+import com.codepath.gridimagesearch.models.SearchResult;
 import com.codepath.gridimagesearch.utils.EndlessScrollListener;
 import com.codepath.gridimagesearch.utils.GoogleQuery;
 import com.loopj.android.http.AsyncHttpClient;
@@ -27,24 +29,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.logging.Filter;
 
 
-public class SearchActivity extends ActionBarActivity implements AdapterView.OnItemClickListener {
+public class SearchActivity extends ActionBarActivity implements AdapterView.OnItemClickListener, FilterFragment.FilterFragmentListener {
 
     private GridView gvSearchResults;
     private SearchResultAdapter searchResultAdapter;
     private int querySize = 8;
-
-    GoogleQuery gQuery;
-
+    private FilterPreferences preferences;
+    private String queryString;
     private ArrayList<SearchResult> searchResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-
-        gQuery = new GoogleQuery();
 
         searchResults = new ArrayList<SearchResult>();
 
@@ -63,7 +63,9 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
                 // or customLoadMoreDataFromApi(totalItemsCount);
             }
         });
-    }
+
+        preferences = new FilterPreferences();
+   }
 
     // Append more data into the adapter
     public void customLoadMoreDataFromApi(int offset) {
@@ -72,6 +74,8 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         // Deserialize API response and then construct new objects to append to the adapter
     }
 
+
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
@@ -79,11 +83,12 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         inflater.inflate(R.menu.menu_search, menu);
         final MenuItem searchItem = menu.findItem(R.id.action_search);
 
-        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        SearchView final searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                gQuery.queryString = query;
+                queryString = query;
                 getResults();
                 searchItem.collapseActionView();
                 searchView.onActionViewCollapsed();
@@ -100,6 +105,16 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     }
 
+    public void showSearchFilter(MenuItem item) {
+
+        Bundle bundle = new Bundle();
+        bundle.putParcelable("prefs", preferences);
+
+        FilterFragment filterFrag = FilterFragment.newInstance();
+        filterFrag.setArguments(bundle);
+        filterFrag.show(getSupportFragmentManager(), "frag_filters");
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -109,6 +124,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            showSearchFilter(item);
             return true;
         }
 
@@ -116,12 +132,11 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     }
 
     private void getResults() {
-        String googleQuery = gQuery.toString();
 
-        Log.i("DEBUG", "Query: " + googleQuery);
+        Log.i("DEBUG", "Query: " + GoogleQuery.getQuery(this.preferences, this.queryString));
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(googleQuery, null, new JsonHttpResponseHandler() {
+        client.get(GoogleQuery.getQuery(this.preferences, this.queryString), null, new JsonHttpResponseHandler() {
                 public void onSuccess(int statusCode, org.apache.http.Header[] headers, JSONObject response ) {
                     Log.i("DEBUG", response.toString());
 
@@ -156,5 +171,10 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             startActivity(i);
 
         //}
+    }
+
+    @Override
+    public void onReceivePreferences(FilterPreferences preferences) {
+            this.preferences = preferences;
     }
 }
