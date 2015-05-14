@@ -36,7 +36,6 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     private GridView gvSearchResults;
     private SearchResultAdapter searchResultAdapter;
-    private int querySize = 8;
     private FilterPreferences preferences;
     private String queryString;
     private ArrayList<SearchResult> searchResults;
@@ -176,5 +175,6 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     @Override
     public void onReceivePreferences(FilterPreferences preferences) {
             this.preferences = preferences;
+            getResults();
     }
 }
