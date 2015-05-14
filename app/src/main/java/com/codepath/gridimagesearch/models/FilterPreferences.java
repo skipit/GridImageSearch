@@ -21,7 +21,10 @@ public class FilterPreferences implements Parcelable {
         this.size = size;
         this.color = color;
         this.type = type;
-        this.site = site.trim();
+        this.site = null;
+        if ( site != null ) {
+            this.site = site.trim();
+        }
     }
 
     @Override

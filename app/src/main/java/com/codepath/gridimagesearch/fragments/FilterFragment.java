@@ -34,11 +34,17 @@ public class FilterFragment extends DialogFragment {
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+
+        String size = spSizes.getSelectedItem().toString();
+        String color = spColors.getSelectedItem().toString();
+        String type = spTypes.getSelectedItem().toString();
+        String site = etSite.getText().toString();
+
         FilterPreferences preferences = new FilterPreferences(
-                spSizes.getSelectedItem().toString(),
-                spColors.getSelectedItem().toString(),
-                spTypes.getSelectedItem().toString(),
-                etSite.getText().toString()
+                (size.equals("any")?null:size),
+                (color.equals("any")?null:color),
+                (type.equals("any")?null:type),
+                ((site.length()==0)?null:site)
         );
 
         Log.i(getActivity().toString(), "Preferences: " + preferences);
