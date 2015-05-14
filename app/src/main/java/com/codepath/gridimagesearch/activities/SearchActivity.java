@@ -39,6 +39,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     private FilterPreferences preferences;
     private String queryString;
     private ArrayList<SearchResult> searchResults;
+    private int currentOffset;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         setContentView(R.layout.activity_search);
 
         searchResults = new ArrayList<SearchResult>();
+        currentOffset = 0;
 
         /* Set up the GridView with the adapter */
         searchResultAdapter = new SearchResultAdapter(this, searchResults);
@@ -58,20 +60,13 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             public void onLoadMore(int page, int totalItemsCount) {
                 // Triggered only when new data needs to be appended to the list
                 // Add whatever code is needed to append new items to your AdapterView
-                customLoadMoreDataFromApi(page);
+                getMoreResults(page);
                 // or customLoadMoreDataFromApi(totalItemsCount);
             }
         });
 
         preferences = new FilterPreferences();
    }
-
-    // Append more data into the adapter
-    public void customLoadMoreDataFromApi(int offset) {
-        // This method probably sends out a network request and appends new data items to your adapter.
-        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
-        // Deserialize API response and then construct new objects to append to the adapter
-    }
 
 
 
@@ -88,12 +83,14 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             @Override
             public boolean onQueryTextSubmit(String query) {
                 queryString = query;
+                currentOffset = 0;
                 getResults();
                 searchItem.collapseActionView();
                 searchView.onActionViewCollapsed();
 
                 return true;
             }
+
 
             @Override
             public boolean onQueryTextChange(String newText) {
@@ -103,6 +100,22 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         return super.onCreateOptionsMenu(menu);
 
     }
+
+    // Append more data into the adapter
+    private void getMoreResults(int offset) {
+        // This method probably sends out a network request and appends new data items to your adapter.
+        // Use the offset value and add it as a parameter to your API request to retrieve paginated data.
+        // Deserialize API response and then construct new objects to append to the adapter
+
+        currentOffset = currentOffset + GoogleQuery.querySize;
+
+        if(currentOffset > GoogleQuery.maxQuerySize) {
+            return;
+        }
+        // only load more if not at the end
+        getResults();
+    }
+
 
     public void showSearchFilter(MenuItem item) {
 
@@ -132,15 +145,20 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     private void getResults() {
 
-        Log.i("DEBUG", "Query: " + GoogleQuery.getQuery(this.preferences, this.queryString));
+        String resultQuery = GoogleQuery.getQuery(  this.preferences,
+                                                    this.queryString,
+                                                    currentOffset);
+        Log.i("DEBUG", "Query: " + resultQuery);
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.get(GoogleQuery.getQuery(this.preferences, this.queryString), null, new JsonHttpResponseHandler() {
+        client.get(resultQuery, null, new JsonHttpResponseHandler() {
                 public void onSuccess(int statusCode, org.apache.http.Header[] headers, JSONObject response ) {
                     Log.i("DEBUG", response.toString());
 
                     try {
-                        searchResults.clear();
+                        if ( currentOffset == 0 ) {
+                            searchResults.clear();
+                        }
                         searchResults.addAll(SearchResult
                                                 .parseJSONArray(response
                                                         .getJSONObject("responseData")
@@ -175,6 +193,8 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     @Override
     public void onReceivePreferences(FilterPreferences preferences) {
             this.preferences = preferences;
+            /* Reset Offset as search is performed again */
+            currentOffset = 0;
             getResults();
     }
 }

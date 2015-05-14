@@ -13,12 +13,13 @@ public class GoogleQuery {
     private static final String SITE_OPT = "&as_sitesearch=";
 
 
-    private static final int querySize = 8;
+    public static final int querySize = 8;
+    public static final int maxQuerySize = 128;
     private static final String URL = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&rsz=" + querySize;
 
 
 
-    public static String getQuery(FilterPreferences preferences, String queryString) {
+    public static String getQuery(FilterPreferences preferences, String queryString, int resultOffset) {
 
         String returnString = URL;
 
@@ -27,6 +28,11 @@ public class GoogleQuery {
             returnString += queryString;
         } else {
             return null;
+        }
+
+        if ( resultOffset > 0 ) {
+            returnString += START_OPT;
+            returnString += resultOffset;
         }
 
         if ( preferences.color != null ) {
