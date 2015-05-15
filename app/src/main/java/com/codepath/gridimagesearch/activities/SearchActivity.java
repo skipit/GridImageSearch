@@ -22,6 +22,7 @@ import com.codepath.gridimagesearch.models.FilterPreferences;
 import com.codepath.gridimagesearch.models.SearchResult;
 import com.codepath.gridimagesearch.utils.EndlessScrollListener;
 import com.codepath.gridimagesearch.utils.GoogleQuery;
+import com.etsy.android.grid.StaggeredGridView;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -51,7 +52,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
         /* Set up the GridView with the adapter */
         searchResultAdapter = new SearchResultAdapter(this, searchResults);
-        GridView gvSearchResults = (GridView) findViewById(R.id.gvSearchResults);
+        StaggeredGridView gvSearchResults = (StaggeredGridView) findViewById(R.id.gvSearchResults);
         gvSearchResults.setAdapter(searchResultAdapter);
         gvSearchResults.setOnItemClickListener(this);
 
