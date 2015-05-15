@@ -1,5 +1,6 @@
 package com.codepath.gridimagesearch.activities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.MenuItemCompat;
@@ -10,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.support.v7.widget.SearchView;
 import android.widget.Toast;
@@ -198,4 +201,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             currentOffset = 0;
             getResults();
     }
+
+
+
 }

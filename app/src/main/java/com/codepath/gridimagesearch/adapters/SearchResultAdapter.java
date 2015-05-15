@@ -19,7 +19,6 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResult> {
 
     private static class ViewHolder {
         ImageView ivPhoto;
-        TextView tvCaption;
     }
 
 
@@ -39,7 +38,6 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResult> {
                     parent,
                     false);
             viewHolder.ivPhoto = (ImageView)convertView.findViewById(R.id.ivPhoto);
-            viewHolder.tvCaption = (TextView)convertView.findViewById(R.id.tvCaption);
             convertView.setTag(viewHolder);
 
         } else {
@@ -48,8 +46,8 @@ public class SearchResultAdapter extends ArrayAdapter<SearchResult> {
 
         Picasso.with(getContext())
                 .load(searchResult.tbUrl)
+                .placeholder(R.drawable.placeholder)
                 .into(viewHolder.ivPhoto);
-        viewHolder.tvCaption.setText(Html.fromHtml( searchResult.title ));
 
         return convertView;
     }

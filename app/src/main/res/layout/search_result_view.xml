@@ -12,16 +12,4 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
 
-    <TextView
-        android:id="@+id/tvCaption"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/abc_text_size_small_material"
-        android:text="Text"
-        android:maxLines="1"
-        android:maxLength="20"
-        android:ellipsize="end"
-        android:layout_below="@+id/ivPhoto"
-        android:layout_centerHorizontal="true" />
-
 </RelativeLayout>

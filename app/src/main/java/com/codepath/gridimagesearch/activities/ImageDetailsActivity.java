@@ -66,7 +66,10 @@ public class ImageDetailsActivity extends ActionBarActivity {
             }
         });
 
-        Picasso.with(this).load(result.url).into(imageView);
+        Picasso.with(this)
+               .load(result.url)
+               .placeholder(R.drawable.placeholder)
+               .into(imageView);
 
     }
 
