@@ -149,6 +149,10 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     private void getResults() {
 
+        /* No need to do anything if there is no query String */
+        if ( this.queryString == null )
+            return;
+
         String resultQuery = GoogleQuery.getQuery(  this.preferences,
                                                     this.queryString,
                                                     currentOffset);

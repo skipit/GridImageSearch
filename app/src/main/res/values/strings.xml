@@ -2,11 +2,11 @@
     <string name="app_name">Grid Image Search</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_image_details">Image Details</string>
-      <string name="label_img_sz">Size  : </string>
-      <string name="label_colors">Color : </string>
-    <string name="label_img_type">Type  : </string>
-     <string name="label_website">Site  : </string>
-    <string name="et_site_hint">Microsoft </string>
+      <string name="label_img_sz">Size</string>
+      <string name="label_colors">Color</string>
+    <string name="label_img_type">Type</string>
+     <string name="label_website">Site</string>
+    <string name="et_site_hint">Microsoft</string>
 
     <string name="image_size_default">any</string>
     <string-array name="image_sizes">
