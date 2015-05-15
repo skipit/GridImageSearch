@@ -7,7 +7,8 @@
     <string name="label_img_type">Type</string>
      <string name="label_website">Site</string>
     <string name="et_site_hint">Microsoft</string>
-
+    <string name="bt_save">Save</string>
+    <string name="bt_cancel">Cancel</string>
     <string name="image_size_default">any</string>
     <string-array name="image_sizes">
         <item>@string/image_size_default</item>
